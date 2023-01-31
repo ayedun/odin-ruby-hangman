@@ -25,14 +25,13 @@ class Game
         @board = Array.new(@secret_word.length-1, "_ ")
     end
     def make_secret_word(word_list)
-        @secret_word = word_list[rand(word_list.length)].split("")
-        puts @secret_word.join(" ")
+        @secret_word = word_list[rand(word_list.length)].downcase.split("")
         create_board()
     end
 
     def pre_turn
         puts "Hello, welcome to Hangman. Please  type \"load\" to load your previous save, or type \"new\" to start a new game."
-        input = gets.chomp
+        input = gets.chomp.downcase
         if input == "load"
             load_game
         elsif input == "new"
@@ -46,19 +45,24 @@ class Game
         @current_guess = ""
         
         until (@current_guess.length ==1 || @current_guess == "save")
+            puts "\n \n"
+            puts "﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌"
             display_board
             @right_answer = false
-            puts "Make your guess! You may guess 1 letter at a time. PLEASE NOTE: if you wish to save your progress, type \"save\", otherwise type your 1-letter guess."
-            puts "Numver of guesses remaining: #{@num_guesses_left}"
-            puts "These are the letters you have used already: #{@history}"
-            @current_guess = gets.chomp
+            puts "Make your guess! You may guess 1 letter at a time. PLEASE NOTE: if you wish to save your progress, type \"save\", otherwise type your 1-letter guess. \n"
+            puts "Numver of guesses remaining: #{@num_guesses_left} \n"
+            puts "These are the letters you have used already: #{@history} \n"
+            @current_guess = gets.chomp.downcase
+            if (@current_guess.length != 1 && @current_guess != "save")
+                puts "Invalid choice, try again"
+            end
         end
         
         if @current_guess == "save"
             save_game
         
         else
-            @history << @current_guess
+            @history << @current_guess << " "
         
             check_guess
         end
